@@ -60,6 +60,26 @@ TelegramBot library consists of 3 modules:
                 e.printStackTrace();
             }
         }
+        
+ 4. There are some builder classes that facilitates the creation of complex objects:
+
+    - `InlineKeyboardButtonBuilder` builds `InlineKeyboardButton[][]`.
+    - `KeyboardButtonBuilder` builds `KeyboardButton[][]`.
+    - `InlineQueryResultBuilder` builds all of 19 types of `InlineQueryResult`.
+    - `InputMessageContentBuilder` builds all of 4 types of `InputMessageContent`.
+    - `ReplyMarkupBuilder` builds all of 4 types of `ReplyMarkup`.
+
+ 5. After implmenting the interface `UpdateHandler`, create a new instance of `JTelegramBot` as follows:
+
+        JTelegramBot bot = new JTelegramBot("BotName", API_TOKEN, updateHandler);
+
+ 6. After that, just start the bot in `Polling` mode:
+
+        bot.start(); // blocking call
+        // or bot.startAsync(); non-blocking call
+
+ 7. Starting JTelegramBot in a `Webhook` mode or in Java EE runtime is coming soon.
+
 
 # Exceptions Handling
 
