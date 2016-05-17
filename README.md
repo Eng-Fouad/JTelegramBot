@@ -91,6 +91,12 @@ Most of the APIs (methods) in this library throws 2 types of exceptions:
 
  - **IOException:** if an I/O exception occurs.
  - **NegativeResponseException:** if 4xx-5xx HTTP response is received from Telegram server.
+ 
+
+# List of APIs
+
+.....
+
 
 # Copyright and Licensing Information
 
