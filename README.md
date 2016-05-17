@@ -33,28 +33,28 @@ TelegramBot library consists of 3 modules:
    - `onGetUpdatesFailure(Exception e)`: Invoked in case of an exception occurs when trying to get the new update.
  3. Inside the callbck methods, wrap the low-level interface `telegramBotApi` with the high-level builder `ApiBuilder`. For example:
 
-    @Override
-			 public void onMessageReceived(TelegramBotApi telegramBotApi, int id, Message message)
-			 {
-				    try
-				    {
-					       ApiBuilder.api(telegramBotApi)
-							               .sendMessage("*This is a simple text message*")
-							               .toChatId(message.getChat().getId())
-							               .asReplyToMessage(message.getMessageId())
-							               .asSilentMessage()
-							               .parseMessageAs(ParseMode.MARKDOWN)
-							               .execute();
-							 }
-				    catch(IOException e)
-				    {
-					       e.printStackTrace();
-				    }
-				    catch(NegativeResponseException e)
-				    {
-					       e.printStackTrace();
-				    }
-			 }
+        @Override
+        public void onMessageReceived(TelegramBotApi telegramBotApi, int id, Message message)
+        {
+            try
+            {
+                ApiBuilder.api(telegramBotApi)
+                          .sendMessage("*This is a simple text message*")
+                          .toChatId(message.getChat().getId())
+                          .asReplyToMessage(message.getMessageId())
+                          .asSilentMessage()
+                          .parseMessageAs(ParseMode.MARKDOWN)
+                          .execute();
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+            catch(NegativeResponseException e)
+            {
+                e.printStackTrace();
+            }
+        }
 
 # Copyright and Licensing Information
 
