@@ -34,9 +34,50 @@ import io.fouad.jtb.core.beans.Message;
  */
 public interface UpdateHandler
 {
+	/**
+	 * Invoked on receiving new incoming message of any kind — text, photo, sticker, etc.
+	 * 
+	 * @param telegramBotApi reference to the Telegram Bot API
+	 * @param id The update‘s unique identifier. Update identifiers start from
+	 *           a certain positive number and increase sequentially
+	 * @param message the new incoming message
+	 */
 	void onMessageReceived(TelegramBotApi telegramBotApi, int id, Message message);
+	
+	/**
+	 * Invoked on receiving new incoming inline query.
+	 * 
+	 * @param telegramBotApi reference to the Telegram Bot API
+	 * @param id The update‘s unique identifier. Update identifiers start from
+	 *           a certain positive number and increase sequentially
+	 * @param inlineQuery the new incoming inline query
+	 */
 	void onInlineQueryReceived(TelegramBotApi telegramBotApi, int id, InlineQuery inlineQuery);
+	
+	/**
+	 * Invoked on receiving the result of an inline query that was chosen by a user and sent to their chat partner.
+	 * 
+	 * @param telegramBotApi reference to the Telegram Bot API
+	 * @param id The update‘s unique identifier. Update identifiers start from
+	 *           a certain positive number and increase sequentially
+	 * @param chosenInlineResult the result of an inline query
+	 */
 	void onChosenInlineResultReceived(TelegramBotApi telegramBotApi, int id, ChosenInlineResult chosenInlineResult);
+	
+	/**
+	 * Invoked on receiving new incoming callback query.
+	 * 
+	 * @param telegramBotApi reference to the Telegram Bot API
+	 * @param id The update‘s unique identifier. Update identifiers start from
+	 *           a certain positive number and increase sequentially
+	 * @param callbackQuery the new incoming callback query
+	 */
 	void onCallbackQueryReceived(TelegramBotApi telegramBotApi, int id, CallbackQuery callbackQuery);
+	
+	/**
+	 * Invoked in case of an exception occurs when trying to get the new update.
+	 * 
+	 * @param e the exception
+	 */
 	void onGetUpdatesFailure(Exception e);
 }
