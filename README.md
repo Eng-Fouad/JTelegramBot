@@ -21,7 +21,10 @@ TelegramBot library consists of 3 modules:
  
 # Installation Instructions
 
-.....
+- [JTelegramBot-Core-v1.0.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/v1.0/JTelegramBot-Core-v1.0.jar)
+- [JTelegramBot-Builders-v1.0.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/v1.0/JTelegramBot-Builders-v1.0.jar)
+
+Other options will be added later.
 
 # How Telegram Bot works?
 
