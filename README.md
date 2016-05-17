@@ -5,7 +5,7 @@ JTelegramBot is a Java library that wraps Telegram Bot API with a simple API usi
     <img src="https://github.com/Eng-Fouad/JTelegramBot/raw/master/assets/telegram_logo.PNG"/>
  </div>
 
-TelegramBot library consists of 3 modules:
+TelegramBot library supports full functionality of Telegram Bot API 2.0 and it consists of 3 modules:
 
  - **Core (required):** This module contains the minimum required classes to use the library.
  - **Builders (recommended):** An optional wrapper that makes Telegram Bot API much easier to use.
