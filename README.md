@@ -1,5 +1,10 @@
 JTelegramBot is a Java library that wraps Telegram Bot API with a simple API using [Builder design pattern](https://en.wikipedia.org/wiki/Builder_pattern#Java_example).
 
+<div style="text-align:center">
+    <img src="https://github.com/Eng-Fouad/JTelegramBot/raw/master/assets/Java_logo.png"/>
+    <img src="https://github.com/Eng-Fouad/JTelegramBot/raw/master/assets/telegram_logo.PNG"/>
+ </div>
+
 TelegramBot library consists of 3 modules:
 
  - **Core (required):** This module contains the minimum required classes to use the library.
@@ -55,6 +60,13 @@ TelegramBot library consists of 3 modules:
                 e.printStackTrace();
             }
         }
+
+# Exceptions Handling
+
+Most of the APIs (methods) in this library throws 2 types of exceptions:
+
+ - **IOException:** if an I/O exception occurs.
+ - **NegativeResponseException:** if 4xx-5xx HTTP response is received from Telegram server.
 
 # Copyright and Licensing Information
 
