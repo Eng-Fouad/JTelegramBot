@@ -2,9 +2,9 @@ JTelegramBot is a Java library that wraps Telegram Bot API with a simple API usi
 
 TelegramBot library consists of 3 modules:
 
- - Core (mandatory): This module contains the minimum required classes to use the library.
- - Builders (optional): An optional wrapper that makes Telegram Bot API much easier to use.
- - Webhook (optional): An optional wrapper that enables "Webhook" mode (coming soon).
+ - **Core (mandatory):** This module contains the minimum required classes to use the library.
+ - **Builders (optional):** An optional wrapper that makes Telegram Bot API much easier to use.
+ - **Webhook (optional):** An optional wrapper that enables "Webhook" mode (coming soon).
 
 # Dependencies
 
