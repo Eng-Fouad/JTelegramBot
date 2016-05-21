@@ -234,9 +234,9 @@ public class HttpClient
 		for(NameValueParameter<String, String> parameter : formFields)
 		{
 			writer.append("Content-Disposition: form-data; name=\"")
-			      .append(URLEncoder.encode(parameter.getName(), "UTF-8"))
+			      .append(parameter.getName())
 			      .append("\"\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n")
-			      .append(URLEncoder.encode(parameter.getValue(), "UTF-8"))
+			      .append(parameter.getValue())
 			      .append("\r\n");
 		}
 		
@@ -244,22 +244,27 @@ public class HttpClient
 		{
 			FileField fileField = parameter.getValue();
 			String fileName = fileField.getFileName();
+			String contentType = URLConnection.guessContentTypeFromName(fileName);
+			if(contentType == null) contentType = "";
 			
 			writer.append("--")
 			      .append(boundary)
 			      .append("\r\nContent-Disposition: form-data; name=\"")
-			      .append(URLEncoder.encode(parameter.getName(), "UTF-8"))
+			      .append(parameter.getName())
 			      .append("\"; filename=\"")
-			      .append(URLEncoder.encode(fileName, "UTF-8"))
+			      .append(fileName)
 			      .append("\"\r\nContent-Type: ")
-			      .append(URLConnection.guessContentTypeFromName(fileName))
-			      .append("\r\nContent-Transfer-Encoding: binary\r\n\r\n");
+			      .append(contentType)
+			      .append("\r\nContent-Transfer-Encoding: binary\r\n\r\n")
+				  .flush();
 			
 			BufferedInputStream bis = new BufferedInputStream(fileField.getInputStream());
 			BufferedOutputStream bos = new BufferedOutputStream(outputStream);
 			
+			
 			int theByte;
 			while((theByte = bis.read()) != -1) bos.write(theByte);
+			bos.flush();
 			bis.close();
 			
 			writer.append("\r\n");

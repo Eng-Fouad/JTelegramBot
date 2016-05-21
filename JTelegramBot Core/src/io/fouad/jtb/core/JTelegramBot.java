@@ -222,7 +222,7 @@ public class JTelegramBot implements TelegramBotApi
 	 * @throws IOException if an I/O exception occurs
 	 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
 	 */
-	public String registerWebhook(String listenUrl, File certificateFile) throws IOException, NegativeResponseException
+	public TelegramResult<String> registerWebhook(String listenUrl, File certificateFile) throws IOException, NegativeResponseException
 	{
 		List<NameValueParameter<String, String>> formFields = new ArrayList<NameValueParameter<String, String>>();
 		List<NameValueParameter<String, FileField>> files = new ArrayList<NameValueParameter<String, FileField>>();
@@ -235,18 +235,18 @@ public class JTelegramBot implements TelegramBotApi
 		
 		if(!telegramResult.isOk()) throw new NegativeResponseException(response.getHttpStatusCode(), telegramResult);
 		
-		return telegramResult.getResult();
+		return telegramResult;
 	}
 	
 	/**
-	 * Unregister the webhook from this server.
+	 * Unregister the webhook if exists.
 	 *
-	 * @return response from Telegram server to the webhook request
+	 * @return response from Telegram server to the webhook removing request
 	 *
 	 * @throws IOException if an I/O exception occurs
 	 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
 	 */
-	public String unregisterWebhook() throws IOException, NegativeResponseException
+	public TelegramResult<String> unregisterWebhook() throws IOException, NegativeResponseException
 	{
 		List<NameValueParameter<String, String>> formFields = new ArrayList<NameValueParameter<String, String>>();
 		List<NameValueParameter<String, FileField>> files = new ArrayList<NameValueParameter<String, FileField>>();
@@ -256,7 +256,7 @@ public class JTelegramBot implements TelegramBotApi
 		
 		if(!telegramResult.isOk()) throw new NegativeResponseException(response.getHttpStatusCode(), telegramResult);
 		
-		return telegramResult.getResult();
+		return telegramResult;
 	}
 	
 	/**
