@@ -1,15 +1,15 @@
-JTelegramBot is a Java library that wraps Telegram Bot API with a simple API using [Builder design pattern](https://en.wikipedia.org/wiki/Builder_pattern#Java_example).
+[![Telegram](http://trellobot.doomdns.org/telegrambadge.svg)](https://telegram.me/JTelegramBot)
 
-<div style="text-align:center">
-    <img src="https://github.com/Eng-Fouad/JTelegramBot/raw/master/assets/Java_logo.png"/>
-    <img src="https://github.com/Eng-Fouad/JTelegramBot/raw/master/assets/telegram_logo.PNG"/>
- </div>
+JTelegramBot is a Java library that wraps Telegram Bot API with a simpler API using [Builder design pattern](https://en.wikipedia.org/wiki/Builder_pattern#Java_example).
+
+![](/assets/Java_logo.png)
+![](/assets/telegram_logo.PNG)
 
 TelegramBot library supports full functionality of Telegram Bot API 2.0 and it consists of 3 modules:
 
  - **Core (required):** This module contains the minimum required classes to use the library.
  - **Builders (recommended):** An optional wrapper that makes Telegram Bot API much easier to use.
- - **Webhook (optional):** An optional wrapper that enables "Webhook" mode (coming soon).
+ - **Webhook (optional):** An optional wrapper that enables "Webhook" mode.
 
 # Dependencies
 
@@ -18,6 +18,7 @@ TelegramBot library supports full functionality of Telegram Bot API 2.0 and it c
  - [jackson-annotations-2.7.2.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/master/JTelegramBot%20Core/libs/jackson-annotations-2.7.2.jar)
  - [jackson-core-2.7.2.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/master/JTelegramBot%20Core/libs/jackson-core-2.7.2.jar)
  - [jackson-databind-2.7.2.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/master/JTelegramBot%20Core/libs/jackson-databind-2.7.2.jar)
+ - [netty-all-4.0.34.Final.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/master/JTelegramBot%20Webhook/libs/netty-all-4.0.34.Final.jar) (only required if you use Webhook module)
  
 # Installation Instructions
 
@@ -82,7 +83,12 @@ Other options will be added later.
         bot.start(); // blocking call
         // or bot.startAsync(); non-blocking call
 
- 7. Starting JTelegramBot in a `Webhook` mode or in Java EE runtime is coming soon.
+ 7. To start JTelegramBot in a `Webhook` mode, instead of starting bot directly (as in step 6), wrap it with `WebhookServer`:
+
+        WebhookServer webhookServer = new WebhookServer(bot, "example.com", TelegramPort.PORT_8443, "/random/path");
+		webhookServer.useGeneratedSelfSignedSslCertificate();
+		webhookServer.registerWebhook();
+		webhookServer.start();
 
 
 # Exceptions Handling
@@ -95,7 +101,7 @@ Most of the APIs (methods) in this library throws 2 types of exceptions:
 
 # List of APIs
 
-.....
+(To be added later)
 
 
 # Copyright and Licensing Information
