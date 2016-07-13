@@ -195,6 +195,7 @@ public class JTelegramBot implements TelegramBotApi
 	{
 		int updateId = update.getUpdateId();
 		Message message = update.getMessage();
+		Message editedMessage = update.getEditedMessage();
 		InlineQuery inlineQuery = update.getInlineQuery();
 		ChosenInlineResult chosenInlineResult = update.getChosenInlineResult();
 		CallbackQuery callbackQuery = update.getCallbackQuery();
@@ -202,6 +203,7 @@ public class JTelegramBot implements TelegramBotApi
 		if(updateHandler != null)
 		{
 			if(message != null) updateHandler.onMessageReceived(this, updateId, message);
+			else if(editedMessage != null) updateHandler.onEditedMessageReceived(this, updateId, editedMessage);
 			else if(inlineQuery != null) updateHandler.onInlineQueryReceived(this, updateId, inlineQuery);
 			else if(chosenInlineResult != null) updateHandler.onChosenInlineResultReceived(this, updateId, chosenInlineResult);
 			else if(callbackQuery != null) updateHandler.onCallbackQueryReceived(this, updateId, callbackQuery);
@@ -725,6 +727,24 @@ public class JTelegramBot implements TelegramBotApi
 	}
 	
 	@Override
+	public boolean leaveChat(ChatIdentifier targetChatIdentifier) throws IOException, NegativeResponseException
+	{
+		List<NameValueParameter<String, String>> formFields = new ArrayList<NameValueParameter<String, String>>();
+		
+		String username = targetChatIdentifier.getUsername();
+		Long id = targetChatIdentifier.getId();
+		if(username != null) formFields.add(new NameValueParameter<String, String>("chat_id", username));
+		else formFields.add(new NameValueParameter<String, String>("chat_id", String.valueOf(id)));
+		
+		HttpResponse response = HttpClient.sendHttpPost(API_URL_PREFIX + apiToken + "/leaveChat", formFields);
+		TelegramResult<Boolean> telegramResult = JsonUtils.toJavaObject(response.getResponseBody(), new TypeReference<TelegramResult<Boolean>>(){});
+		
+		if(!telegramResult.isOk()) throw new NegativeResponseException(response.getHttpStatusCode(), telegramResult);
+		
+		return telegramResult.getResult();
+	}
+	
+	@Override
 	public boolean unbanChatMember(ChatIdentifier targetChatIdentifier, int userId)
 			throws IOException, NegativeResponseException
 	{
@@ -739,6 +759,80 @@ public class JTelegramBot implements TelegramBotApi
 		
 		HttpResponse response = HttpClient.sendHttpPost(API_URL_PREFIX + apiToken + "/unbanChatMember", formFields);
 		TelegramResult<Boolean> telegramResult = JsonUtils.toJavaObject(response.getResponseBody(), new TypeReference<TelegramResult<Boolean>>(){});
+		
+		if(!telegramResult.isOk()) throw new NegativeResponseException(response.getHttpStatusCode(), telegramResult);
+		
+		return telegramResult.getResult();
+	}
+	
+	@Override
+	public Chat getChat(ChatIdentifier targetChatIdentifier) throws IOException, NegativeResponseException
+	{
+		List<NameValueParameter<String, String>> formFields = new ArrayList<NameValueParameter<String, String>>();
+		
+		String username = targetChatIdentifier.getUsername();
+		Long id = targetChatIdentifier.getId();
+		if(username != null) formFields.add(new NameValueParameter<String, String>("chat_id", username));
+		else formFields.add(new NameValueParameter<String, String>("chat_id", String.valueOf(id)));
+		
+		HttpResponse response = HttpClient.sendHttpPost(API_URL_PREFIX + apiToken + "/getChat", formFields);
+		TelegramResult<Chat> telegramResult = JsonUtils.toJavaObject(response.getResponseBody(), new TypeReference<TelegramResult<Chat>>(){});
+		
+		if(!telegramResult.isOk()) throw new NegativeResponseException(response.getHttpStatusCode(), telegramResult);
+		
+		return telegramResult.getResult();
+	}
+	
+	@Override
+	public ChatMember[] getChatAdministrators(ChatIdentifier targetChatIdentifier) throws IOException, NegativeResponseException
+	{
+		List<NameValueParameter<String, String>> formFields = new ArrayList<NameValueParameter<String, String>>();
+		
+		String username = targetChatIdentifier.getUsername();
+		Long id = targetChatIdentifier.getId();
+		if(username != null) formFields.add(new NameValueParameter<String, String>("chat_id", username));
+		else formFields.add(new NameValueParameter<String, String>("chat_id", String.valueOf(id)));
+		
+		HttpResponse response = HttpClient.sendHttpPost(API_URL_PREFIX + apiToken + "/getChatAdministrators", formFields);
+		TelegramResult<ChatMember[]> telegramResult = JsonUtils.toJavaObject(response.getResponseBody(), new TypeReference<TelegramResult<ChatMember[]>>(){});
+		
+		if(!telegramResult.isOk()) throw new NegativeResponseException(response.getHttpStatusCode(), telegramResult);
+		
+		return telegramResult.getResult();
+	}
+	
+	@Override
+	public int getChatMembersCount(ChatIdentifier targetChatIdentifier) throws IOException, NegativeResponseException
+	{
+		List<NameValueParameter<String, String>> formFields = new ArrayList<NameValueParameter<String, String>>();
+		
+		String username = targetChatIdentifier.getUsername();
+		Long id = targetChatIdentifier.getId();
+		if(username != null) formFields.add(new NameValueParameter<String, String>("chat_id", username));
+		else formFields.add(new NameValueParameter<String, String>("chat_id", String.valueOf(id)));
+		
+		HttpResponse response = HttpClient.sendHttpPost(API_URL_PREFIX + apiToken + "/getChatMembersCount", formFields);
+		TelegramResult<Integer> telegramResult = JsonUtils.toJavaObject(response.getResponseBody(), new TypeReference<TelegramResult<Integer>>(){});
+		
+		if(!telegramResult.isOk()) throw new NegativeResponseException(response.getHttpStatusCode(), telegramResult);
+		
+		return telegramResult.getResult();
+	}
+	
+	@Override
+	public ChatMember getChatMember(ChatIdentifier targetChatIdentifier, int userId) throws IOException, NegativeResponseException
+	{
+		List<NameValueParameter<String, String>> formFields = new ArrayList<NameValueParameter<String, String>>();
+		
+		String username = targetChatIdentifier.getUsername();
+		Long id = targetChatIdentifier.getId();
+		if(username != null) formFields.add(new NameValueParameter<String, String>("chat_id", username));
+		else formFields.add(new NameValueParameter<String, String>("chat_id", String.valueOf(id)));
+		
+		formFields.add(new NameValueParameter<String, String>("user_id", String.valueOf(userId)));
+		
+		HttpResponse response = HttpClient.sendHttpPost(API_URL_PREFIX + apiToken + "/getChatMember", formFields);
+		TelegramResult<ChatMember> telegramResult = JsonUtils.toJavaObject(response.getResponseBody(), new TypeReference<TelegramResult<ChatMember>>(){});
 		
 		if(!telegramResult.isOk()) throw new NegativeResponseException(response.getHttpStatusCode(), telegramResult);
 		

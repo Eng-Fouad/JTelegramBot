@@ -25,25 +25,19 @@
 package io.fouad.jtb.core.enums;
 
 /**
- * Types of the message entities.
+ * Created by Fouad on 13-Jul-16.
  */
-public enum MessageEntityType
+public enum ChatMemberStatus
 {
-	MENTION("mention"), /** @username */
-	HASHTAG("hashtag"),
-	BOT_COMMAND("bot_command"),
-	URL("url"),
-	EMAIL("email"),
-	BOLD("bold"), /** bold text */
-	ITALIC("italic"), /** italic text */
-	CODE("code"), /** monowidth string */
-	PRE("pre"), /** monowidth block */
-	TEXT_LINK("text_link"), /** for clickable text URLs */
-	TEXT_MENTION("text_mention"); /** for users without usernames */
+	CREATOR("creator"),
+	ADMINISTRATOR("administrator"),
+	MEMBER("member"),
+	LEFT("left"),
+	KICKED("kicked");
 	
 	private final String string;
 	
-	MessageEntityType(String string)
+	ChatMemberStatus(String string)
 	{
 		this.string = string;
 	}

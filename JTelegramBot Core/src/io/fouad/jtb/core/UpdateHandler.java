@@ -45,6 +45,16 @@ public interface UpdateHandler
 	void onMessageReceived(TelegramBotApi telegramBotApi, int id, Message message);
 	
 	/**
+	 * Invoked on receiving new version of a message that is known to the bot and was edited.
+	 *
+	 * @param telegramBotApi reference to the Telegram Bot API
+	 * @param id The update‘s unique identifier. Update identifiers start from
+	 *           a certain positive number and increase sequentially
+	 * @param message the message
+	 */
+	void onEditedMessageReceived(TelegramBotApi telegramBotApi, int id, Message message);
+	
+	/**
 	 * Invoked on receiving new incoming inline query.
 	 * 
 	 * @param telegramBotApi reference to the Telegram Bot API

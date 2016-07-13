@@ -33,7 +33,10 @@ import io.fouad.jtb.core.enums.ChatType;
 public class Chat
 {
 	/**
-	 * Unique identifier for this chat, not exceeding 1e13 by absolute value.
+	 * Unique identifier for this chat. This number may be greater than 32 bits
+	 * and some programming languages may have difficulty/silent defects in
+	 * interpreting it. But it smaller than 52 bits, so a signed 64 bit integer
+	 * or double-precision float type are safe for storing this identifier.
 	 */
 	@JsonProperty("id")
 	private long id;
@@ -51,7 +54,7 @@ public class Chat
 	private String title;
 	
 	/**
-	 * Optional. Username, for private chats and channels if available.
+	 * Optional. Username, for private chats, supergroups and channels if available.
 	 */
 	@JsonProperty("username")
 	private String username;

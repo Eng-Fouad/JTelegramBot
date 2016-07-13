@@ -49,6 +49,12 @@ public class Update
 	private Message message;
 	
 	/**
+	 * Optional. New version of a message that is known to the bot and was edited.
+	 */
+	@JsonProperty("edited_message")
+	private Message editedMessage;
+	
+	/**
 	 * Optional. New incoming inline query.
 	 */
 	@JsonProperty("inline_query")
@@ -69,11 +75,12 @@ public class Update
 	
 	public Update(){}
 	
-	public Update(int updateId, Message message, InlineQuery inlineQuery, ChosenInlineResult chosenInlineResult,
-	              CallbackQuery callbackQuery)
+	public Update(int updateId, Message message, Message editedMessage, InlineQuery inlineQuery,
+	              ChosenInlineResult chosenInlineResult, CallbackQuery callbackQuery)
 	{
 		this.updateId = updateId;
 		this.message = message;
+		this.editedMessage = editedMessage;
 		this.inlineQuery = inlineQuery;
 		this.chosenInlineResult = chosenInlineResult;
 		this.callbackQuery = callbackQuery;
@@ -81,6 +88,7 @@ public class Update
 	
 	public int getUpdateId(){return updateId;}
 	public Message getMessage(){return message;}
+	public Message getEditedMessage(){return editedMessage;}
 	public InlineQuery getInlineQuery(){return inlineQuery;}
 	public ChosenInlineResult getChosenInlineResult(){return chosenInlineResult;}
 	public CallbackQuery getCallbackQuery(){return callbackQuery;}
@@ -95,6 +103,8 @@ public class Update
 		
 		if(updateId != update.updateId) return false;
 		if(message != null ? !message.equals(update.message) : update.message != null) return false;
+		if(editedMessage != null ? !editedMessage.equals(update.editedMessage) : update.editedMessage != null)
+			return false;
 		if(inlineQuery != null ? !inlineQuery.equals(update.inlineQuery) : update.inlineQuery != null) return false;
 		if(chosenInlineResult != null ? !chosenInlineResult.equals(update.chosenInlineResult)
 		                              : update.chosenInlineResult != null) return false;
@@ -107,6 +117,7 @@ public class Update
 	{
 		int result = updateId;
 		result = 31 * result + (message != null ? message.hashCode() : 0);
+		result = 31 * result + (editedMessage != null ? editedMessage.hashCode() : 0);
 		result = 31 * result + (inlineQuery != null ? inlineQuery.hashCode() : 0);
 		result = 31 * result + (chosenInlineResult != null ? chosenInlineResult.hashCode() : 0);
 		result = 31 * result + (callbackQuery != null ? callbackQuery.hashCode() : 0);
@@ -116,12 +127,8 @@ public class Update
 	@Override
 	public String toString()
 	{
-		return "Update{" +
-				"updateId=" + updateId +
-				", message=" + message +
-				", inlineQuery=" + inlineQuery +
-				", chosenInlineResult=" + chosenInlineResult +
-				", callbackQuery=" + callbackQuery +
-				'}';
+		return "Update{" + "updateId=" + updateId + ", message=" + message + ", editedMessage=" + editedMessage +
+				", inlineQuery=" + inlineQuery + ", chosenInlineResult=" + chosenInlineResult + ", callbackQuery=" +
+				callbackQuery + '}';
 	}
 }

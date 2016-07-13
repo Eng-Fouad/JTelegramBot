@@ -427,6 +427,14 @@ public class ApiBuilder
 		}
 		
 		/**
+		 * Use this method for your bot to leave a group, supergroup or channel.
+		 */
+		public LeavingChatNoTarget leaveChat()
+		{
+			return new LeavingChatNoTarget(telegramBotApi);
+		}
+		
+		/**
 		 * Unbans a previously kicked user in a supergroup. The user will not return to the group
 		 * automatically, but will be able to join via link, etc. The bot must be an administrator
 		 * in the group for this to work. 
@@ -436,6 +444,41 @@ public class ApiBuilder
 		public UnbanningChatMemberNoTarget unbanChatMember(int userId)
 		{
 			return new UnbanningChatMemberNoTarget(telegramBotApi, userId);
+		}
+		
+		/**
+		 * Use this method to get up to date information about the chat (current name of the user for one-on-one
+		 * conversations, current username of a user, group or channel, etc.).
+		 */
+		public GettingChatNoTarget getChat()
+		{
+			return new GettingChatNoTarget(telegramBotApi);
+		}
+		
+		/**
+		 * Use this method to get a list of administrators in a chat.
+		 */
+		public GettingChatAdministratorsNoTarget getChatAdministrators()
+		{
+			return new GettingChatAdministratorsNoTarget(telegramBotApi);
+		}
+		
+		/**
+		 * Use this method to get the number of members in a chat.
+		 */
+		public GettingChatMembersCountNoTarget getChatMembersCount()
+		{
+			return new GettingChatMembersCountNoTarget(telegramBotApi);
+		}
+		
+		/**
+		 * Use this method to get information about a member of a chat.
+		 * 
+		 * @param userId id of the user
+		 */
+		public GettingChatMemberNoTarget getChatMember(int userId)
+		{
+			return new GettingChatMemberNoTarget(telegramBotApi, userId);
 		}
 		
 		/**
@@ -1756,6 +1799,63 @@ public class ApiBuilder
 		}
 	}
 	
+	public static class LeavingChatNoTarget
+	{
+		private TelegramBotApi telegramBotApi;
+		
+		public LeavingChatNoTarget(TelegramBotApi telegramBotApi)
+		{
+			this.telegramBotApi = telegramBotApi;
+		}
+		
+		/**
+		 * leaves chat by super-group username (@supergroupusername)
+		 *
+		 * @param chatUsername username of the super-group (syntax @supergroupusername)
+		 */
+		public LeavingChatReady byChatUsername(String chatUsername)
+		{
+			if(chatUsername == null) throw new IllegalArgumentException("\"chatUsername\" cannot be null.");
+			
+			return new LeavingChatReady(telegramBotApi, ChatIdentifier.byUsername(chatUsername));
+		}
+		
+		/**
+		 * leaves chat by id of group or super-group.
+		 *
+		 * @param chatId chat id of the group or super-group
+		 */
+		public LeavingChatReady byChatId(long chatId)
+		{
+			return new LeavingChatReady(telegramBotApi, ChatIdentifier.byId(chatId));
+		}
+	}
+	
+	public static class LeavingChatReady
+	{
+		private TelegramBotApi telegramBotApi;
+		private ChatIdentifier targetChatIdentifier;
+		
+		public LeavingChatReady(TelegramBotApi telegramBotApi, ChatIdentifier targetChatIdentifier)
+		{
+			this.telegramBotApi = telegramBotApi;
+			this.targetChatIdentifier = targetChatIdentifier;
+		}
+		
+		/**
+		 * Builds the request and sends it.
+		 *
+		 * @return <code>true</code> on success
+		 *
+		 * @throws IOException if an I/O exception occurs
+		 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
+		 */
+		public boolean execute() throws IOException, NegativeResponseException
+		{
+			return telegramBotApi.leaveChat(targetChatIdentifier);
+		}
+	}
+	
 	public static class UnbanningChatMemberNoTarget
 	{
 		private TelegramBotApi telegramBotApi;
@@ -1814,6 +1914,238 @@ public class ApiBuilder
 		public boolean execute() throws IOException, NegativeResponseException
 		{
 			return telegramBotApi.unbanChatMember(targetChatIdentifier, userId);
+		}
+	}
+	
+	public static class GettingChatNoTarget
+	{
+		private TelegramBotApi telegramBotApi;
+		
+		public GettingChatNoTarget(TelegramBotApi telegramBotApi)
+		{
+			this.telegramBotApi = telegramBotApi;
+		}
+		
+		/**
+		 * gets chat by super-group username (@supergroupusername)
+		 *
+		 * @param chatUsername username of the super-group (syntax @supergroupusername)
+		 */
+		public GettingChatReady byChatUsername(String chatUsername)
+		{
+			if(chatUsername == null) throw new IllegalArgumentException("\"chatUsername\" cannot be null.");
+			
+			return new GettingChatReady(telegramBotApi, ChatIdentifier.byUsername(chatUsername));
+		}
+		
+		/**
+		 * gets chat by id of group or super-group.
+		 *
+		 * @param chatId chat id of the group or super-group
+		 */
+		public GettingChatReady byChatId(long chatId)
+		{
+			return new GettingChatReady(telegramBotApi, ChatIdentifier.byId(chatId));
+		}
+	}
+	
+	public static class GettingChatReady
+	{
+		private TelegramBotApi telegramBotApi;
+		private ChatIdentifier targetChatIdentifier;
+		
+		public GettingChatReady(TelegramBotApi telegramBotApi, ChatIdentifier targetChatIdentifier)
+		{
+			this.telegramBotApi = telegramBotApi;
+			this.targetChatIdentifier = targetChatIdentifier;
+		}
+		
+		/**
+		 * Builds the request and sends it.
+		 *
+		 * @return <code>Chat</code> object on success
+		 *
+		 * @throws IOException if an I/O exception occurs
+		 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
+		 */
+		public Chat execute() throws IOException, NegativeResponseException
+		{
+			return telegramBotApi.getChat(targetChatIdentifier);
+		}
+	}
+	
+	public static class GettingChatAdministratorsNoTarget
+	{
+		private TelegramBotApi telegramBotApi;
+		
+		public GettingChatAdministratorsNoTarget(TelegramBotApi telegramBotApi)
+		{
+			this.telegramBotApi = telegramBotApi;
+		}
+		
+		/**
+		 * gets administrators of chat by super-group username (@supergroupusername)
+		 *
+		 * @param chatUsername username of the super-group (syntax @supergroupusername)
+		 */
+		public GettingChatAdministratorsReady ofChatUsername(String chatUsername)
+		{
+			if(chatUsername == null) throw new IllegalArgumentException("\"chatUsername\" cannot be null.");
+			
+			return new GettingChatAdministratorsReady(telegramBotApi, ChatIdentifier.byUsername(chatUsername));
+		}
+		
+		/**
+		 * gets administrators of chat by id of group or super-group.
+		 *
+		 * @param chatId chat id of the group or super-group
+		 */
+		public GettingChatAdministratorsReady ofChatId(long chatId)
+		{
+			return new GettingChatAdministratorsReady(telegramBotApi, ChatIdentifier.byId(chatId));
+		}
+	}
+	
+	public static class GettingChatAdministratorsReady
+	{
+		private TelegramBotApi telegramBotApi;
+		private ChatIdentifier targetChatIdentifier;
+		
+		public GettingChatAdministratorsReady(TelegramBotApi telegramBotApi, ChatIdentifier targetChatIdentifier)
+		{
+			this.telegramBotApi = telegramBotApi;
+			this.targetChatIdentifier = targetChatIdentifier;
+		}
+		
+		/**
+		 * Builds the request and sends it.
+		 *
+		 * @return array of <code>ChatMember</code> objects on success
+		 *
+		 * @throws IOException if an I/O exception occurs
+		 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
+		 */
+		public ChatMember[] execute() throws IOException, NegativeResponseException
+		{
+			return telegramBotApi.getChatAdministrators(targetChatIdentifier);
+		}
+	}
+	
+	public static class GettingChatMembersCountNoTarget
+	{
+		private TelegramBotApi telegramBotApi;
+		
+		public GettingChatMembersCountNoTarget(TelegramBotApi telegramBotApi)
+		{
+			this.telegramBotApi = telegramBotApi;
+		}
+		
+		/**
+		 * gets chat member count of chat by super-group username (@supergroupusername)
+		 *
+		 * @param chatUsername username of the super-group (syntax @supergroupusername)
+		 */
+		public GettingChatMembersCountReady ofChatUsername(String chatUsername)
+		{
+			if(chatUsername == null) throw new IllegalArgumentException("\"chatUsername\" cannot be null.");
+			
+			return new GettingChatMembersCountReady(telegramBotApi, ChatIdentifier.byUsername(chatUsername));
+		}
+		
+		/**
+		 * gets chat member count of chat by id of group or super-group.
+		 *
+		 * @param chatId chat id of the group or super-group
+		 */
+		public GettingChatMembersCountReady ofChatId(long chatId)
+		{
+			return new GettingChatMembersCountReady(telegramBotApi, ChatIdentifier.byId(chatId));
+		}
+	}
+	
+	public static class GettingChatMembersCountReady
+	{
+		private TelegramBotApi telegramBotApi;
+		private ChatIdentifier targetChatIdentifier;
+		
+		public GettingChatMembersCountReady(TelegramBotApi telegramBotApi, ChatIdentifier targetChatIdentifier)
+		{
+			this.telegramBotApi = telegramBotApi;
+			this.targetChatIdentifier = targetChatIdentifier;
+		}
+		
+		/**
+		 * Builds the request and sends it.
+		 *
+		 * @return on success, number of chat members in the chat
+		 *
+		 * @throws IOException if an I/O exception occurs
+		 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
+		 */
+		public int execute() throws IOException, NegativeResponseException
+		{
+			return telegramBotApi.getChatMembersCount(targetChatIdentifier);
+		}
+	}
+	
+	public static class GettingChatMemberNoTarget
+	{
+		private TelegramBotApi telegramBotApi;
+		private int userId;
+		
+		public GettingChatMemberNoTarget(TelegramBotApi telegramBotApi, int userId)
+		{
+			this.telegramBotApi = telegramBotApi;
+			this.userId = userId;
+		}
+		
+		/**
+		 * gets chat member count of chat by super-group username (@supergroupusername)
+		 *
+		 * @param chatUsername username of the super-group (syntax @supergroupusername)
+		 */
+		public GettingChatMemberReady ofChatUsername(String chatUsername)
+		{
+			if(chatUsername == null) throw new IllegalArgumentException("\"chatUsername\" cannot be null.");
+			
+			return new GettingChatMemberReady(telegramBotApi, userId, ChatIdentifier.byUsername(chatUsername));
+		}
+		
+		/**
+		 * gets chat member count of chat by id of group or super-group.
+		 *
+		 * @param chatId chat id of the group or super-group
+		 */
+		public GettingChatMemberReady ofChatId(long chatId)
+		{
+			return new GettingChatMemberReady(telegramBotApi, userId, ChatIdentifier.byId(chatId));
+		}
+	}
+	
+	public static class GettingChatMemberReady
+	{
+		private TelegramBotApi telegramBotApi;
+		private int userId;
+		private ChatIdentifier targetChatIdentifier;
+		
+		public GettingChatMemberReady(TelegramBotApi telegramBotApi, int userId, ChatIdentifier targetChatIdentifier)
+		{
+			this.telegramBotApi = telegramBotApi;
+			this.userId = userId;
+			this.targetChatIdentifier = targetChatIdentifier;
+		}
+		
+		/**
+		 * Builds the request and sends it.
+		 *
+		 * @return <code>ChatMember</code> object on success
+		 *
+		 * @throws IOException if an I/O exception occurs
+		 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
+		 */
+		public ChatMember execute() throws IOException, NegativeResponseException
+		{
+			return telegramBotApi.getChatMember(targetChatIdentifier, userId);
 		}
 	}
 	

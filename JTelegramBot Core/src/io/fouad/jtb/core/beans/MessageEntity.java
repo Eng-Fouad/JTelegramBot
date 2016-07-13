@@ -34,9 +34,9 @@ import io.fouad.jtb.core.enums.MessageEntityType;
 public class MessageEntity
 {
 	/**
-	 * Type of the entity. One of mention (@username), hashtag, bot_command, url,
-	 * email, bold (bold text), italic (italic text), code (monowidth string),
-	 * pre (monowidth block), text_link (for clickable text URLs).
+	 * Type of the entity. Can be mention (@username), hashtag, bot_command, url, email,
+	 * bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block),
+	 * text_link (for clickable text URLs), text_mention (for users without usernames).
 	 */
 	@JsonProperty("type")
 	private MessageEntityType type;
@@ -60,20 +60,28 @@ public class MessageEntity
 	@JsonProperty("url")
 	private String url;
 	
+	/**
+	 * Optional. For “text_mention” only, the mentioned user.
+	 */
+	@JsonProperty("user")
+	private User user;
+	
 	public MessageEntity(){}
 	
-	public MessageEntity(MessageEntityType type, int offset, int length, String url)
+	public MessageEntity(MessageEntityType type, int offset, int length, String url, User user)
 	{
 		this.type = type;
 		this.offset = offset;
 		this.length = length;
 		this.url = url;
+		this.user = user;
 	}
 	
 	public MessageEntityType getType(){return type;}
 	public int getOffset(){return offset;}
 	public int getLength(){return length;}
 	public String getUrl(){return url;}
+	public User getUser(){return user;}
 	
 	@Override
 	public boolean equals(Object o)
@@ -86,7 +94,8 @@ public class MessageEntity
 		if(offset != that.offset) return false;
 		if(length != that.length) return false;
 		if(type != that.type) return false;
-		return url != null ? url.equals(that.url) : that.url == null;
+		if(url != null ? !url.equals(that.url) : that.url != null) return false;
+		return user != null ? user.equals(that.user) : that.user == null;
 		
 	}
 	
@@ -97,17 +106,14 @@ public class MessageEntity
 		result = 31 * result + offset;
 		result = 31 * result + length;
 		result = 31 * result + (url != null ? url.hashCode() : 0);
+		result = 31 * result + (user != null ? user.hashCode() : 0);
 		return result;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return "MessageEntity{" +
-				"type=" + type +
-				", offset=" + offset +
-				", length=" + length +
-				", url='" + url + '\'' +
-				'}';
+		return "MessageEntity{" + "type=" + type + ", offset=" + offset + ", length=" + length + ", url='" + url +
+				'\'' + ", user=" + user + '}';
 	}
 }

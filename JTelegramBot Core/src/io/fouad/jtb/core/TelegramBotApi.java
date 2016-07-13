@@ -25,7 +25,9 @@
 package io.fouad.jtb.core;
 
 import io.fouad.jtb.core.beans.BooleanOrMessageResult;
+import io.fouad.jtb.core.beans.Chat;
 import io.fouad.jtb.core.beans.ChatIdentifier;
+import io.fouad.jtb.core.beans.ChatMember;
 import io.fouad.jtb.core.beans.InlineKeyboardMarkup;
 import io.fouad.jtb.core.beans.InlineQueryResult;
 import io.fouad.jtb.core.beans.MediaIdentifier;
@@ -339,6 +341,9 @@ public interface TelegramBotApi
 	 * Gets basic info about a file and prepare it for downloading. For the moment, bots can download files
 	 * of up to 20MB in size.
 	 * 
+	 * Note: This function may not preserve original file name. Mime type of the file and its name (if available)
+	 * should be saved when the File object is received.
+	 * 
 	 * @param fileId file identifier to get info about
 	 *    
 	 * @return <code>TelegramFile</code> object
@@ -367,6 +372,18 @@ public interface TelegramBotApi
 	boolean kickChatMember(ChatIdentifier targetChatIdentifier, int userId) throws IOException, NegativeResponseException;
 	
 	/**
+	 * Use this method for your bot to leave a group, supergroup or channel.
+	 *
+	 * @param targetChatIdentifier unique identifier for the target group/supergroup or username of the target supergroup
+	 *
+	 * @return <code>true</code> on success
+	 *
+	 * @throws IOException if an I/O exception occurs
+	 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
+	 */
+	boolean leaveChat(ChatIdentifier targetChatIdentifier) throws IOException, NegativeResponseException;
+	
+	/**
 	 * Unbans a previously kicked user in a supergroup. The user will not return to the group automatically,
 	 * but will be able to join via link, etc. The bot must be an administrator in the group for this to work. 
 	 *
@@ -379,6 +396,58 @@ public interface TelegramBotApi
 	 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
 	 */
 	boolean unbanChatMember(ChatIdentifier targetChatIdentifier, int userId) throws IOException, NegativeResponseException;
+	
+	/**
+	 * Use this method to get up to date information about the chat (current name of the user for one-on-one
+	 * conversations, current username of a user, group or channel, etc.). 
+	 *
+	 * @param targetChatIdentifier unique identifier for the target group/supergroup or username of the target supergroup
+	 *
+	 * @return a <code>Chat</code> object on success
+	 *
+	 * @throws IOException if an I/O exception occurs
+	 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
+	 */
+	Chat getChat(ChatIdentifier targetChatIdentifier) throws IOException, NegativeResponseException;
+	
+	/**
+	 * Use this method to get a list of administrators in a chat. 
+	 *
+	 * @param targetChatIdentifier unique identifier for the target group/supergroup or username of the target supergroup
+	 *
+	 * @return On success, returns an Array of <code>ChatMember</code> objects that contains information about all chat
+	 * administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed,
+	 * only the creator will be returned.
+	 *
+	 * @throws IOException if an I/O exception occurs
+	 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
+	 */
+	ChatMember[] getChatAdministrators(ChatIdentifier targetChatIdentifier) throws IOException, NegativeResponseException;
+	
+	/**
+	 * Use this method to get the number of members in a chat. 
+	 *
+	 * @param targetChatIdentifier unique identifier for the target group/supergroup or username of the target supergroup
+	 *
+	 * @return On success, number of chat members.
+	 *
+	 * @throws IOException if an I/O exception occurs
+	 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
+	 */
+	int getChatMembersCount(ChatIdentifier targetChatIdentifier) throws IOException, NegativeResponseException;
+	
+	/**
+	 * Use this method to get information about a member of a chat. 
+	 *
+	 * @param targetChatIdentifier unique identifier for the target group/supergroup or username of the target supergroup
+	 * @param userId unique identifier of the target user
+	 *
+	 * @return <code>ChatMember</code> object on success
+	 *
+	 * @throws IOException if an I/O exception occurs
+	 * @throws NegativeResponseException if 4xx-5xx HTTP response is received from Telegram server
+	 */
+	ChatMember getChatMember(ChatIdentifier targetChatIdentifier, int userId) throws IOException, NegativeResponseException;
 	
 	/**
 	 * Sends answers to callback queries sent from inline keyboards. The answer will be displayed to

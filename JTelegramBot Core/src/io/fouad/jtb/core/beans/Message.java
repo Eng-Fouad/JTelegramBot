@@ -86,6 +86,12 @@ public class Message
 	private Message replyToMessage;
 	
 	/**
+	 * Optional. Date the message was last edited in Unix time.
+	 */
+	@JsonProperty("edit_date")
+	private int editDate;
+	
+	/**
 	 * Optional. For text messages, the actual UTF-8 text of the message,
 	 * 0-4096 characters.
 	 */
@@ -199,26 +205,40 @@ public class Message
 	
 	/**
 	 * Optional. Service message: the supergroup has been created.
+	 * This field can‘t be received in a message coming through updates,
+	 * because bot can’t be a member of a supergroup when it is created.
+	 * It can only be found in reply_to_message if someone replies to
+	 * a very first message in a directly created supergroup.
 	 */
 	@JsonProperty("supergroup_chat_created")
 	private Boolean superGroupChatCreated;
 	
 	/**
-	 * Optional. Service message: the channel has been created.
+	 * Optional. Service message: the channel has been created. This field
+	 * can‘t be received in a message coming through updates, because bot
+	 * can’t be a member of a channel when it is created. It can only be
+	 * found in reply_to_message if someone replies to a very first message
+	 * in a channel.
 	 */
 	@JsonProperty("channel_chat_created")
 	private Boolean channelChatCreated;
 	
 	/**
-	 * Optional. The group has been migrated to a supergroup with the
-	 * specified identifier, not exceeding 1e13 by absolute value.
+	 * Optional. The group has been migrated to a supergroup with the specified
+	 * identifier. This number may be greater than 32 bits and some programming
+	 * languages may have difficulty/silent defects in interpreting it. But it
+	 * smaller than 52 bits, so a signed 64 bit integer or double-precision float
+	 * type are safe for storing this identifier.
 	 */
 	@JsonProperty("migrate_to_chat_id")
 	private Long migrateToChatId;
 	
 	/**
-	 * Optional. The supergroup has been migrated from a group with the
-	 * specified identifier, not exceeding 1e13 by absolute value.
+	 * Optional. The supergroup has been migrated from a group with the specified
+	 * identifier. This number may be greater than 32 bits and some programming
+	 * languages may have difficulty/silent defects in interpreting it. But it
+	 * smaller than 52 bits, so a signed 64 bit integer or double-precision float
+	 * type are safe for storing this identifier.
 	 */
 	@JsonProperty("migrate_from_chat_id")
 	private Long migrateFromChatId;
@@ -234,12 +254,12 @@ public class Message
 	public Message(){}
 	
 	public Message(int messageId, User from, int date, Chat chat, User forwardFrom, Chat forwardFromChat,
-	               Integer forwardDate, Message replyToMessage, String text, MessageEntity[] entities, Audio audio,
-	               Document document, PhotoSize[] photo, Sticker sticker, Video video, Voice voice, String caption,
-	               Contact contact, Location location, Venue venue, User newChatMember, User leftChatMember,
-	               String newChatTitle, PhotoSize[] newChatPhoto, Boolean deleteChatPhoto, Boolean groupChatCreated,
-	               Boolean superGroupChatCreated, Boolean channelChatCreated, Long migrateToChatId,
-	               Long migrateFromChatId, Message pinnedMessage)
+	               Integer forwardDate, Message replyToMessage, int editDate, String text, MessageEntity[] entities,
+	               Audio audio, Document document, PhotoSize[] photo, Sticker sticker, Video video, Voice voice,
+	               String caption, Contact contact, Location location, Venue venue, User newChatMember,
+	               User leftChatMember, String newChatTitle, PhotoSize[] newChatPhoto, Boolean deleteChatPhoto,
+	               Boolean groupChatCreated, Boolean superGroupChatCreated, Boolean channelChatCreated,
+	               Long migrateToChatId, Long migrateFromChatId, Message pinnedMessage)
 	{
 		this.messageId = messageId;
 		this.from = from;
@@ -249,6 +269,7 @@ public class Message
 		this.forwardFromChat = forwardFromChat;
 		this.forwardDate = forwardDate;
 		this.replyToMessage = replyToMessage;
+		this.editDate = editDate;
 		this.text = text;
 		this.entities = entities;
 		this.audio = audio;
@@ -282,6 +303,7 @@ public class Message
 	public Chat getForwardFromChat(){return forwardFromChat;}
 	public Integer getForwardDate(){return forwardDate;}
 	public Message getReplyToMessage(){return replyToMessage;}
+	public int getEditDate(){return editDate;}
 	public String getText(){return text;}
 	public MessageEntity[] getEntities(){return entities;}
 	public Audio getAudio(){return audio;}
@@ -316,6 +338,7 @@ public class Message
 		
 		if(messageId != message.messageId) return false;
 		if(date != message.date) return false;
+		if(editDate != message.editDate) return false;
 		if(from != null ? !from.equals(message.from) : message.from != null) return false;
 		if(chat != null ? !chat.equals(message.chat) : message.chat != null) return false;
 		if(forwardFrom != null ? !forwardFrom.equals(message.forwardFrom) : message.forwardFrom != null) return false;
@@ -370,11 +393,12 @@ public class Message
 		result = 31 * result + (forwardFromChat != null ? forwardFromChat.hashCode() : 0);
 		result = 31 * result + (forwardDate != null ? forwardDate.hashCode() : 0);
 		result = 31 * result + (replyToMessage != null ? replyToMessage.hashCode() : 0);
+		result = 31 * result + editDate;
 		result = 31 * result + (text != null ? text.hashCode() : 0);
-		result = 31 * result + Arrays.hashCode(entities);
+		result = 31 * result + Arrays.deepHashCode(entities);
 		result = 31 * result + (audio != null ? audio.hashCode() : 0);
 		result = 31 * result + (document != null ? document.hashCode() : 0);
-		result = 31 * result + Arrays.hashCode(photo);
+		result = 31 * result + Arrays.deepHashCode(photo);
 		result = 31 * result + (sticker != null ? sticker.hashCode() : 0);
 		result = 31 * result + (video != null ? video.hashCode() : 0);
 		result = 31 * result + (voice != null ? voice.hashCode() : 0);
@@ -385,7 +409,7 @@ public class Message
 		result = 31 * result + (newChatMember != null ? newChatMember.hashCode() : 0);
 		result = 31 * result + (leftChatMember != null ? leftChatMember.hashCode() : 0);
 		result = 31 * result + (newChatTitle != null ? newChatTitle.hashCode() : 0);
-		result = 31 * result + Arrays.hashCode(newChatPhoto);
+		result = 31 * result + Arrays.deepHashCode(newChatPhoto);
 		result = 31 * result + (deleteChatPhoto != null ? deleteChatPhoto.hashCode() : 0);
 		result = 31 * result + (groupChatCreated != null ? groupChatCreated.hashCode() : 0);
 		result = 31 * result + (superGroupChatCreated != null ? superGroupChatCreated.hashCode() : 0);
@@ -399,38 +423,17 @@ public class Message
 	@Override
 	public String toString()
 	{
-		return "Message{" +
-				"messageId=" + messageId +
-				", from=" + from +
-				", date=" + date +
-				", chat=" + chat +
-				", forwardFrom=" + forwardFrom +
-				", forwardFromChat=" + forwardFromChat +
-				", forwardDate=" + forwardDate +
-				", replyToMessage=" + replyToMessage +
-				", text='" + text + '\'' +
-				", entities=" + Arrays.deepToString(entities) +
-				", audio=" + audio +
-				", document=" + document +
-				", photo=" + Arrays.deepToString(photo) +
-				", sticker=" + sticker +
-				", video=" + video +
-				", voice=" + voice +
-				", caption='" + caption + '\'' +
-				", contact=" + contact +
-				", location=" + location +
-				", venue=" + venue +
-				", newChatMember=" + newChatMember +
-				", leftChatMember=" + leftChatMember +
-				", newChatTitle='" + newChatTitle + '\'' +
-				", newChatPhoto=" + Arrays.deepToString(newChatPhoto) +
-				", deleteChatPhoto=" + deleteChatPhoto +
-				", groupChatCreated=" + groupChatCreated +
-				", superGroupChatCreated=" + superGroupChatCreated +
-				", channelChatCreated=" + channelChatCreated +
-				", migrateToChatId=" + migrateToChatId +
-				", migrateFromChatId=" + migrateFromChatId +
-				", pinnedMessage=" + pinnedMessage +
-				'}';
+		return "Message{" + "messageId=" + messageId + ", from=" + from + ", date=" + date + ", chat=" + chat +
+				", forwardFrom=" + forwardFrom + ", forwardFromChat=" + forwardFromChat + ", forwardDate=" +
+				forwardDate + ", replyToMessage=" + replyToMessage + ", editDate=" + editDate + ", text='" +
+				text + '\'' + ", entities=" + Arrays.deepToString(entities) + ", audio=" + audio + ", document=" +
+				document + ", photo=" + Arrays.deepToString(photo) + ", sticker=" + sticker + ", video=" + video +
+				", voice=" + voice + ", caption='" + caption + '\'' + ", contact=" + contact + ", location=" +
+				location + ", venue=" + venue + ", newChatMember=" + newChatMember + ", leftChatMember=" +
+				leftChatMember + ", newChatTitle='" + newChatTitle + '\'' + ", newChatPhoto=" +
+				Arrays.deepToString(newChatPhoto) + ", deleteChatPhoto=" + deleteChatPhoto + ", groupChatCreated=" +
+				groupChatCreated + ", superGroupChatCreated=" + superGroupChatCreated + ", channelChatCreated=" +
+				channelChatCreated + ", migrateToChatId=" + migrateToChatId + ", migrateFromChatId=" +
+				migrateFromChatId + ", pinnedMessage=" + pinnedMessage + '}';
 	}
 }
