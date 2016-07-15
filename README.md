@@ -29,7 +29,7 @@ Other options will be added later.
 
 # How Telegram Bot works?
 
-.....
+See https://core.telegram.org/bots/api
 
 # Usage
 
