@@ -22,8 +22,9 @@ TelegramBot library supports full functionality of Telegram Bot API 2.1 and it c
  
 # Installation Instructions
 
-- [JTelegramBot-Core-v1.0.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/v1.0/JTelegramBot-Core-v1.0.jar)
-- [JTelegramBot-Builders-v1.0.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/v1.0/JTelegramBot-Builders-v1.0.jar)
+- [JTelegramBot-Core-v1.1.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/master/jars/JTelegramBot-Core-v1.1.jar)
+- [JTelegramBot-Builders-v1.1.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/master/jars/JTelegramBot-Builders-v1.1.jar)
+- [JTelegramBot-Webhook-v1.0.jar](https://github.com/Eng-Fouad/JTelegramBot/raw/master/jars/JTelegramBot-Webhook-v1.0.jar)
 
 Other options will be added later.
 
