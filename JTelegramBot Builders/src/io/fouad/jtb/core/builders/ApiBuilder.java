@@ -1754,7 +1754,7 @@ public class ApiBuilder
 		 *
 		 * @param chatUsername username of the super-group (syntax @supergroupusername)
 		 */
-		public KickingChatMemberReady toChatUsername(String chatUsername)
+		public KickingChatMemberReady fromChatUsername(String chatUsername)
 		{
 			if(chatUsername == null) throw new IllegalArgumentException("\"chatUsername\" cannot be null.");
 			
@@ -1766,7 +1766,7 @@ public class ApiBuilder
 		 *
 		 * @param chatId chat id of the group or super-group
 		 */
-		public KickingChatMemberReady toChatId(long chatId)
+		public KickingChatMemberReady fromChatId(long chatId)
 		{
 			return new KickingChatMemberReady(telegramBotApi, userId, ChatIdentifier.byId(chatId));
 		}
@@ -1872,7 +1872,7 @@ public class ApiBuilder
 		 *
 		 * @param chatUsername username of the super-group (syntax @supergroupusername)
 		 */
-		public UnbanningChatMemberReady toChatUsername(String chatUsername)
+		public UnbanningChatMemberReady fromChatUsername(String chatUsername)
 		{
 			if(chatUsername == null) throw new IllegalArgumentException("\"chatUsername\" cannot be null.");
 			
@@ -1884,7 +1884,7 @@ public class ApiBuilder
 		 *
 		 * @param chatId chat id of the group or super-group
 		 */
-		public UnbanningChatMemberReady toChatId(long chatId)
+		public UnbanningChatMemberReady fromChatId(long chatId)
 		{
 			return new UnbanningChatMemberReady(telegramBotApi, userId, ChatIdentifier.byId(chatId));
 		}
@@ -2185,7 +2185,7 @@ public class ApiBuilder
 		 *
 		 * @param chatUsername username of the super-group or the channel (syntax @username)
 		 */
-		public EditingMessageGeneric toChatUsername(String chatUsername)
+		public EditingMessageGeneric fromChatUsername(String chatUsername)
 		{
 			if(chatUsername == null) throw new IllegalArgumentException("\"chatUsername\" cannot be null.");
 			
@@ -2197,7 +2197,7 @@ public class ApiBuilder
 		 *
 		 * @param chatId chat id where the message will be edited
 		 */
-		public EditingMessageGeneric toChatId(long chatId)
+		public EditingMessageGeneric fromChatId(long chatId)
 		{
 			return new EditingMessageGeneric(telegramBotApi, messageId, ChatIdentifier.byId(chatId));
 		}

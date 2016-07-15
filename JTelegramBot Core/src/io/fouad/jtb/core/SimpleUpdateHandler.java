@@ -39,6 +39,9 @@ public class SimpleUpdateHandler implements UpdateHandler
 	public void onMessageReceived(TelegramBotApi telegramBotApi, int id, Message message){}
 	
 	@Override
+	public void onEditedMessageReceived(TelegramBotApi telegramBotApi, int id, Message message){}
+	
+	@Override
 	public void onInlineQueryReceived(TelegramBotApi telegramBotApi, int id, InlineQuery inlineQuery){}
 	
 	@Override
