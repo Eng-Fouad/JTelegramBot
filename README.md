@@ -1,4 +1,5 @@
 [![Telegram](http://trellobot.doomdns.org/telegrambadge.svg)](https://telegram.me/JTelegramBot)
+[![ghit.me](https://ghit.me/badge.svg?repo=Eng-Fouad/JTelegramBot)](https://ghit.me/repo/Eng-Fouad/JTelegramBot)
 
 JTelegramBot is a Java library that wraps Telegram Bot API with a simpler API using [Builder design pattern](https://en.wikipedia.org/wiki/Builder_pattern#Java_example).
 
