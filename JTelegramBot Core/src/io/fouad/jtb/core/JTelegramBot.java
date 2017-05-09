@@ -881,7 +881,7 @@ public class JTelegramBot implements TelegramBotApi
 		if(inlineKeyboardMarkup != null) formFields.add(new NameValueParameter<String, String>("reply_markup", JsonUtils.toJson(inlineKeyboardMarkup)));
 		
 		HttpResponse response = HttpClient.sendHttpPost(API_URL_PREFIX + apiToken + "/editMessageText", formFields);
-		TelegramResult<String> telegramResult = JsonUtils.toJavaObject(response.getResponseBody(), new TypeReference<TelegramResult<String>>(){});
+		TelegramResult<Message> telegramResult = JsonUtils.toJavaObject(response.getResponseBody(), new TypeReference<TelegramResult<Message>>(){});
 		
 		if(!telegramResult.isOk()) throw new NegativeResponseException(response.getHttpStatusCode(), telegramResult);
 		
