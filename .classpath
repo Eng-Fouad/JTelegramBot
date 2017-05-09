@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="JTelegramBot Builders/src"/>
+	<classpathentry kind="src" path="JTelegramBot Core/src"/>
+	<classpathentry kind="src" path="JTelegramBot Webhook/src"/>
+	<classpathentry kind="lib" path="jars/JTelegramBot-Builders-v1.0.jar"/>
+	<classpathentry kind="lib" path="jars/JTelegramBot-Builders-v1.1.jar"/>
+	<classpathentry kind="lib" path="jars/JTelegramBot-Core-v1.0.jar"/>
+	<classpathentry kind="lib" path="jars/JTelegramBot-Core-v1.1.jar"/>
+	<classpathentry kind="lib" path="jars/JTelegramBot-Webhook-v1.0.jar"/>
+	<classpathentry kind="lib" path="JTelegramBot Core/libs/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="JTelegramBot Core/libs/jackson-annotations-2.7.2.jar"/>
+	<classpathentry kind="lib" path="JTelegramBot Core/libs/jackson-core-2.7.2.jar"/>
+	<classpathentry kind="lib" path="JTelegramBot Core/libs/jackson-databind-2.7.2.jar"/>
+	<classpathentry kind="lib" path="JTelegramBot Webhook/libs/netty-all-4.0.34.Final.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
